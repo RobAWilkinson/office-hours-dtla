@@ -13,10 +13,12 @@ var redisUrl = url.parse(process.env.REDIS_URL);
 var queueOptions = {
   redis: {
     host: redisUrl.hostname,
-    port: parseInt(redisUrl.port),
-    auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
+    port: parseInt(redisUrl.port)
   }
 };
+if(redisUrl.auth) {
+    queueOptions.redis.auth = redisUrl.auth.split(':')[1];
+}
 console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
 app.set('views', __dirname + '/views');

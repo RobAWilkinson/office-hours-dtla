@@ -15,13 +15,17 @@ var reservationSchema = new mongoose.Schema({
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
 var redisUrl = url.parse(process.env.REDIS_URL);
+console.log(redisUrl);
 var queueOptions = {
   redis: {
     host: redisUrl.hostname,
-    port: parseInt(redisUrl.port),
-    auth: redisUrl.auth.split(':')[1]
+    port: parseInt(redisUrl.port)
   }
 };
+if(redisUrl.auth) {
+    queueOptions.redis.auth = redisUrl.auth.split(':')[1];
+}
+
 console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
 queue.process('erase', function(job, done) {
