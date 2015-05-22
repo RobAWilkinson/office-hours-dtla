@@ -1,5 +1,6 @@
 var kue = require('kue');
 var url = require('url');
+var parse = require('url-parse');
 var redis  = require('kue/node_modules/redis');
 var mongoose = require('mongoose');
 var queue = kue.createQueue();
@@ -14,11 +15,11 @@ var reservationSchema = new mongoose.Schema({
   }
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
-var redis_url = parse(process.env.REDIS_URL);
+var redisUrl = parse(process.env.REDIS_URL, true);
 var queue = kue.createQueue({
   redis: {
-    port: redis_url.port,
-    host: redis_url.host,
+    port: redisUrl.port,
+    host: redisUrl.host,
     auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
   }
 });
