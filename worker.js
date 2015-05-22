@@ -14,8 +14,13 @@ var reservationSchema = new mongoose.Schema({
   }
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
+var redis_url = parse(process.env.REDIS_URL);
 var queue = kue.createQueue({
-    redis: process.env.REDIS_URL
+  redis: {
+    port: redis_url.port,
+    host: redis_url.host,
+    auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
+  }
 });
 queue.process('erase', function(job, done) {
   console.log('queue process running');

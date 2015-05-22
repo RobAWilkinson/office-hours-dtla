@@ -8,9 +8,14 @@ var url = require('url');
 var redis  = require('kue/node_modules/redis');
 var bodyParser = require('body-parser');
 
+var redis_url = parse(process.env.REDIS_URL);
 // config
 var queue = kue.createQueue({
-    redis: process.env.REDIS_URL
+  redis: {
+    port: redis_url.port,
+    host: redis_url.host,
+    auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
+  }
 });
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
