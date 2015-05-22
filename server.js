@@ -4,9 +4,9 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var moment = require('moment');
 var kue = require('kue');
-var bodyParser = require('body-parser');
 var url = require('url');
 var redis  = require('kue/node_modules/redis');
+var bodyParser = require('body-parser');
 
 // config
 var queue = kue.createQueue();
@@ -133,14 +133,6 @@ app.get('/search', function(req,res) {
       res.end('now it is' + count);
     }
   });
-});
-queue.process('erase', function(job, done) {
-  console.log('queue process running');
-  function eraser(job) {
-    ReservationModel.findByIdAndRemove(job.data.id).exec();
-  }
-  eraser(job);
-  done();
 });
 app.listen(3000, function() {
   console.log('App loaded and running');
