@@ -1,7 +1,6 @@
 var kue = require('kue');
 var redis  = require('kue/node_modules/redis');
 var mongoose = require('mongoose');
-var url = require('url');
 var queue = kue.createQueue();
 mongoose.connect(process.env.MONGOLAB_URI);
 // set up our models
@@ -14,8 +13,8 @@ var reservationSchema = new mongoose.Schema({
   }
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
+var url = require('url');
 var redisUrl = url.parse(process.env.REDIS_URL);
-console.log(redisUrl);
 var queueOptions = {
   redis: {
     host: redisUrl.hostname,
@@ -28,6 +27,7 @@ if(redisUrl.auth) {
 
 console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
+
 queue.process('erase', function(job, done) {
   console.log('queue process running');
   function eraser(job) {

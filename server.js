@@ -21,6 +21,7 @@ if(redisUrl.auth) {
 }
 console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(morgan('combined'));
