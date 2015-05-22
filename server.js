@@ -19,8 +19,10 @@ var queueOptions = {
 if(redisUrl.auth) {
     queueOptions.redis.auth = redisUrl.auth.split(':')[1];
 }
-console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
+console.log('queueoptions');
+console.log(queueOptions);
+console.log(queue);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
