@@ -20,7 +20,7 @@ var queue = kue.createQueue({
   redis: {
     host: redisUrl.hostname,
     port: parseInt(redisUrl.port),
-    auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
+    auth: redisUrl.auth.split(':')[1]
   }
 });
 queue.process('erase', function(job, done) {

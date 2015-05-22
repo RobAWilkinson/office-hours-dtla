@@ -133,6 +133,7 @@ app.get('/search', function(req,res) {
     }
   });
 });
-app.listen(3000, function() {
+app.use(kue.app);
+app.listen(process.env.PORT, function() {
   console.log('App loaded and running');
 });
