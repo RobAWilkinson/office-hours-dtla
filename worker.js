@@ -1,6 +1,5 @@
 var kue = require('kue');
 var mongoose = require('mongoose');
-var queue = kue.createQueue();
 mongoose.connect(process.env.MONGOLAB_URI);
 // set up our models
 // j
@@ -12,6 +11,7 @@ var reservationSchema = new mongoose.Schema({
   }
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
+
 var url = require('url');
 
 var redisUrl = url.parse(process.env.REDIS_URL);
