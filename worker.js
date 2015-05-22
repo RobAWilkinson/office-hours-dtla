@@ -1,5 +1,4 @@
 var kue = require('kue');
-var redis  = require('kue/node_modules/redis');
 var mongoose = require('mongoose');
 var queue = kue.createQueue();
 mongoose.connect(process.env.MONGOLAB_URI);
