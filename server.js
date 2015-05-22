@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var moment = require('moment');
 var kue = require('kue');
-var url = require('url');
 var parse = require('url-parse');
 var redis  = require('kue/node_modules/redis');
 var bodyParser = require('body-parser');
 
+var url = require('url');
 var redisUrl = url.parse(process.env.REDIS_URL);
 var queue = kue.createQueue({
   redis: {
