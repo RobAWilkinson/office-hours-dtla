@@ -20,9 +20,6 @@ if(redisUrl.auth) {
     queueOptions.redis.auth = redisUrl.auth.split(':')[1];
 }
 var queue = kue.createQueue(queueOptions);
-console.log('queueoptions');
-console.log(queueOptions);
-console.log(queue);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -99,7 +96,6 @@ app.get('/', function(req, res) {
       //res.json(reservations);
       res.render('index', { reservations: reservations, timeslots: timeslots});
     } else {
-      console.log(reservations);
     }
   });
 });
@@ -117,7 +113,6 @@ app.post('/',function(req,res){
   var difference = midnight.getTime() - now.getTime();
   reserv.save(function(err) {
     if(!err) {
-      console.log('created');
       queue.create('erase', {
         id: reserv.id
       }).delay(difference).save();
@@ -130,7 +125,6 @@ app.get('/search', function(req,res) {
     if(!err) {
       res.write('before it was' + count);
     } else {
-      console.log('error');
     }
 
   });

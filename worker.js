@@ -26,12 +26,8 @@ if(redisUrl.auth) {
 }
 
 var queue = kue.createQueue(queueOptions);
-console.log('queueoptions');
-console.log(queueOptions);
-console.log(queue);
 
 queue.process('erase', function(job, done) {
-  console.log('queue process running');
   function eraser(job) {
     ReservationModel.findByIdAndRemove(job.data.id).exec();
   }
