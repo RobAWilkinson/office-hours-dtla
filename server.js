@@ -9,10 +9,11 @@ var parse = require('url-parse');
 var redis  = require('kue/node_modules/redis');
 var bodyParser = require('body-parser');
 
-var redisUrl = parse(process.env.REDIS_URL, true);
+var redisUrl = url.parse(process.env.REDIS_URL);
 var queue = kue.createQueue({
   redis: {
-    host: redisUrl.host,
+    host: redisUrl.hostname,
+    port: parseInt(redisUrl.port),
     auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
   }
 });
