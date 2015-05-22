@@ -3,8 +3,10 @@ var app = express();
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var moment = require('moment');
+var kue = require('kue');
 var bodyParser = require('body-parser');
 // config
+var queue = kue.createQueue();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(morgan('combined'));
@@ -74,6 +76,7 @@ app.get('/', function(req, res) {
   ];
   return ReservationModel.find(function(err, reservations) {
     if(!err) {
+      //res.json(reservations);
       res.render('index', { reservations: reservations, timeslots: timeslots});
     } else {
       console.log(reservations);
@@ -88,12 +91,42 @@ app.post('/',function(req,res){
       stopTime:  moment(req.body.startTime).add(15, 'minutes')
     } 
   });
+  var now = new Date();
+  var midnight = new Date();
+  midnight.setHours(24,0,0,0);
+  var difference = midnight.getTime() - now.getTime();
   reserv.save(function(err) {
     if(!err) {
       console.log('created');
+      queue.create('erase', {
+        id: reserv.id
+      }).delay(difference).save();
     }
   });
   res.json(reserv);
+});
+app.get('/search', function(req,res) {
+  ReservationModel.count({}, function(err, count) {
+    if(!err) {
+      res.write('before it was' + count);
+    } else {
+      console.log('error');
+    }
+
+  });
+  ReservationModel.count({}, function(err, count) {
+    if(!err) {
+      res.end('now it is' + count);
+    }
+  });
+});
+queue.process('erase', function(job, done) {
+  console.log('queue process running');
+  function eraser(job) {
+    ReservationModel.findByIdAndRemove(job.data.id).exec();
+  }
+  eraser(job);
+  done();
 });
 app.listen(3000, function() {
   console.log('App loaded and running');
