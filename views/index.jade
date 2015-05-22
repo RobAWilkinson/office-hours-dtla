@@ -1,0 +1,12 @@
+doctype html
+h1 Office hours
+ul
+  each reservation in reservations
+    li Name: #{reservation.student} Start time: #{moment(reservation.times.startTime).format('hh:mm')} Stop Time: #{moment(reservation.times.stopTime).format('hh:mm')}
+form(method='post', action='')
+    input(type='text' name='name')
+    label(for='startTime') Start Time:
+    select(name='startTime')
+      each timeslot in timeslots
+        option(value=timeslot.value)= timeslot.display
+    button Submit
