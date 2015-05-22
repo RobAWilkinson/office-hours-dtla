@@ -24,8 +24,8 @@ if(redisUrl.auth) {
     queueOptions.redis.auth = redisUrl.auth.split(':')[1];
 }
 
-console.log(queueOptions);
 var queue = kue.createQueue(queueOptions);
+console.log(queue);
 
 queue.process('erase', function(job, done) {
   console.log('queue process running');
