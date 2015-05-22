@@ -2,6 +2,7 @@ var kue = require('kue');
 var url = require('url');
 var redis  = require('kue/node_modules/redis');
 var mongoose = require('mongoose');
+var queue = kue.createQueue();
 mongoose.connect('mongodb://localhost:27017/reservations');
 // set up our models
 // j
