@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var redisUrl = parse(process.env.REDIS_URL, true);
 var queue = kue.createQueue({
   redis: {
-    port: redisUrl.port,
     host: redisUrl.host,
     auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
   }
