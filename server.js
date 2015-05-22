@@ -10,13 +10,15 @@ var bodyParser = require('body-parser');
 
 var url = require('url');
 var redisUrl = url.parse(process.env.REDIS_URL);
-var queue = kue.createQueue({
+var queueOptions = {
   redis: {
     host: redisUrl.hostname,
     port: parseInt(redisUrl.port),
     auth: 'p7ptn4ckh9k5c8daco8nmps58hn'
   }
-});
+};
+console.log(queueOptions);
+var queue = kue.createQueue(queueOptions);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(morgan('combined'));
