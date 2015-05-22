@@ -15,6 +15,7 @@ var reservationSchema = new mongoose.Schema({
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
 var redisUrl = url.parse(process.env.REDIS_URL);
+console.log(redisUrl);
 var queue = kue.createQueue({
   redis: {
     host: redisUrl.hostname,
