@@ -5,6 +5,9 @@ var morgan = require('morgan');
 var moment = require('moment');
 var kue = require('kue');
 var bodyParser = require('body-parser');
+var url = require('url');
+var redis  = require('kue/node_modules/redis');
+
 // config
 var queue = kue.createQueue();
 app.set('views', __dirname + '/views');
@@ -30,6 +33,17 @@ var reservationSchema = new mongoose.Schema({
   }
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
+
+// set up redis
+kue.redis.createClient = function() {
+    var redisUrl = url.parse(process.env.REDIS_URL)
+      , client = redis.createClient(redisUrl.port, redisUrl.hostname);
+    if (redisUrl.auth) {
+        client.auth(redisUrl.auth.split(":")[1]);
+    }
+    return client;
+};
+
 
 app.get('/', function(req, res) {
   var timeslots = [
