@@ -13,6 +13,7 @@ var reservationSchema = new mongoose.Schema({
 });
 var ReservationModel = mongoose.model('Reservation', reservationSchema);
 var url = require('url');
+
 var redisUrl = url.parse(process.env.REDIS_URL);
 var queueOptions = {
   redis: {
@@ -25,6 +26,8 @@ if(redisUrl.auth) {
 }
 
 var queue = kue.createQueue(queueOptions);
+console.log('queueoptions');
+console.log(queueOptions);
 console.log(queue);
 
 queue.process('erase', function(job, done) {
